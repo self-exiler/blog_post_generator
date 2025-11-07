@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'blog_post_generator.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.2
+## Created by: Qt User Interface Compiler version 6.9.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -143,6 +143,26 @@ class Ui_BlogPostGenerator(object):
 
         self.formLayout_2.setWidget(6, QFormLayout.ItemRole.FieldRole, self.descriptionEdit)
 
+        self.label_9 = QLabel(self.groupBox_2)
+        self.label_9.setObjectName(u"label_9")
+
+        self.formLayout_2.setWidget(7, QFormLayout.ItemRole.LabelRole, self.label_9)
+
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.contentFilePathEdit = QLineEdit(self.groupBox_2)
+        self.contentFilePathEdit.setObjectName(u"contentFilePathEdit")
+
+        self.horizontalLayout_4.addWidget(self.contentFilePathEdit)
+
+        self.browseContentButton = QPushButton(self.groupBox_2)
+        self.browseContentButton.setObjectName(u"browseContentButton")
+
+        self.horizontalLayout_4.addWidget(self.browseContentButton)
+
+
+        self.formLayout_2.setLayout(7, QFormLayout.ItemRole.FieldRole, self.horizontalLayout_4)
+
 
         self.verticalLayout.addWidget(self.groupBox_2)
 
@@ -152,6 +172,7 @@ class Ui_BlogPostGenerator(object):
         self.openPostButton.setObjectName(u"openPostButton")
 
         self.horizontalLayout_3.addWidget(self.openPostButton)
+
         self.generateButton = QPushButton(self.centralwidget)
         self.generateButton.setObjectName(u"generateButton")
 
@@ -211,10 +232,13 @@ class Ui_BlogPostGenerator(object):
         self.authorComboBox.setItemText(0, "")
 
         self.label_8.setText(QCoreApplication.translate("BlogPostGenerator", u"\u63cf\u8ff0:", None))
-        self.openPostButton.setText(QCoreApplication.translate("BlogPostGenerator", u"\u6253\u5f00\u5df2\u6709\u535a\u6587", None))
+        self.label_9.setText(QCoreApplication.translate("BlogPostGenerator", u"\u6b63\u6587\u6765\u6e90:", None))
+        self.contentFilePathEdit.setPlaceholderText(QCoreApplication.translate("BlogPostGenerator", u"\u53ef\u9009\uff1a\u9009\u62e9\u4e00\u4e2aMD\u6587\u4ef6\u4f5c\u4e3a\u6b63\u6587\u6765\u6e90", None))
+        self.browseContentButton.setText(QCoreApplication.translate("BlogPostGenerator", u"\u6d4f\u89c8", None))
         self.openPostButton.setText(QCoreApplication.translate("BlogPostGenerator", u"\u6253\u5f00\u5df2\u6709\u535a\u6587", None))
         self.generateButton.setText(QCoreApplication.translate("BlogPostGenerator", u"\u751f\u6210\u535a\u6587", None))
         self.clearButton.setText(QCoreApplication.translate("BlogPostGenerator", u"\u6e05\u7a7a", None))
         self.openVSCodeButton.setText(QCoreApplication.translate("BlogPostGenerator", u"\u7528VSCode\u6253\u5f00", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("BlogPostGenerator", u"\u72b6\u6001\u65e5\u5fd7", None))
     # retranslateUi
+
