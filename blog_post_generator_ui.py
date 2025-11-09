@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'blog_post_generator.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.0
+## Created by: Qt User Interface Compiler version 6.9.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -139,7 +139,7 @@ class Ui_BlogPostGenerator(object):
 
         self.descriptionEdit = QTextEdit(self.groupBox_2)
         self.descriptionEdit.setObjectName(u"descriptionEdit")
-        self.descriptionEdit.setMaximumHeight(100)
+        self.descriptionEdit.setAcceptRichText(False)
 
         self.formLayout_2.setWidget(6, QFormLayout.ItemRole.FieldRole, self.descriptionEdit)
 
@@ -159,6 +159,11 @@ class Ui_BlogPostGenerator(object):
         self.browseContentButton.setObjectName(u"browseContentButton")
 
         self.horizontalLayout_4.addWidget(self.browseContentButton)
+
+        self.extractKeywordsButton = QPushButton(self.groupBox_2)
+        self.extractKeywordsButton.setObjectName(u"extractKeywordsButton")
+
+        self.horizontalLayout_4.addWidget(self.extractKeywordsButton)
 
 
         self.formLayout_2.setLayout(7, QFormLayout.ItemRole.FieldRole, self.horizontalLayout_4)
@@ -197,7 +202,6 @@ class Ui_BlogPostGenerator(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.logTextEdit = QTextEdit(self.groupBox_3)
         self.logTextEdit.setObjectName(u"logTextEdit")
-        self.logTextEdit.setMaximumHeight(150)
         self.logTextEdit.setReadOnly(True)
 
         self.verticalLayout_2.addWidget(self.logTextEdit)
@@ -235,6 +239,7 @@ class Ui_BlogPostGenerator(object):
         self.label_9.setText(QCoreApplication.translate("BlogPostGenerator", u"\u6b63\u6587\u6765\u6e90:", None))
         self.contentFilePathEdit.setPlaceholderText(QCoreApplication.translate("BlogPostGenerator", u"\u53ef\u9009\uff1a\u9009\u62e9\u4e00\u4e2aMD\u6587\u4ef6\u4f5c\u4e3a\u6b63\u6587\u6765\u6e90", None))
         self.browseContentButton.setText(QCoreApplication.translate("BlogPostGenerator", u"\u6d4f\u89c8", None))
+        self.extractKeywordsButton.setText(QCoreApplication.translate("BlogPostGenerator", u"AI\u63d0\u70bc\u5173\u952e\u8bcd", None))
         self.openPostButton.setText(QCoreApplication.translate("BlogPostGenerator", u"\u6253\u5f00\u5df2\u6709\u535a\u6587", None))
         self.generateButton.setText(QCoreApplication.translate("BlogPostGenerator", u"\u751f\u6210\u535a\u6587", None))
         self.clearButton.setText(QCoreApplication.translate("BlogPostGenerator", u"\u6e05\u7a7a", None))

@@ -6,6 +6,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional, Any, Dict, Tuple
 import yaml
+import requests
 from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
 from PySide6.QtCore import QDate, QTime, Slot
 from blog_post_generator_ui import Ui_BlogPostGenerator
@@ -53,6 +54,7 @@ class BlogPostGenerator(QMainWindow):
         self.ui.clearButton.clicked.connect(self.clear_form)
         self.ui.openVSCodeButton.clicked.connect(self.open_in_vscode)
         self.ui.browseContentButton.clicked.connect(self.browse_content_file)
+        self.ui.extractKeywordsButton.clicked.connect(self.extract_keywords)
     
     def closeEvent(self, event) -> None:
         """窗口关闭事件，保存配置"""
@@ -459,6 +461,91 @@ class BlogPostGenerator(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, "错误", f"打开VSCode失败: {str(e)}")
             self.log(f"打开VSCode失败: {str(e)}")
+
+    @Slot()
+    def extract_keywords(self) -> None:
+        """使用OpenAI API从正文中提取关键词"""
+        content_file_path = self.ui.contentFilePathEdit.text().strip()
+        
+        if not content_file_path:
+            QMessageBox.warning(self, "警告", "请先选择正文来源文件")
+            return
+        
+        # 读取正文内容
+        content = self.read_content_file(content_file_path)
+        if not content:
+            return
+        
+        # 加载OpenAI配置
+        config = self._get_config_parser()
+        if not config.has_section('OpenAI'):
+            QMessageBox.warning(self, "警告", "未在config.ini中找到OpenAI配置")
+            return
+            
+        api_key = config.get('OpenAI', 'api_key', fallback='')
+        api_base = config.get('OpenAI', 'api_base', fallback='https://api.openai.com/v1')
+        model = config.get('OpenAI', 'model', fallback='gpt-3.5-turbo')
+        
+        if not api_key:
+            QMessageBox.warning(self, "警告", "未在config.ini中设置OpenAI API密钥")
+            return
+        
+        # 准备API请求
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}"
+        }
+        
+        prompt = f"""请从以下文本中提取五个最重要的关键词，只返回关键词，用逗号分隔，不要添加任何其他文字：
+
+{content[:2000]}"""
+        
+        data = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": "你是一个专业的关键词提取助手，擅长从文本中提取最重要的关键词。"},
+                {"role": "user", "content": prompt}
+            ],
+            "temperature": 0.3,
+            "max_tokens": 100
+        }
+        
+        try:
+            self.log("正在调用OpenAI API提取关键词...")
+            self.ui.extractKeywordsButton.setEnabled(False)
+            self.ui.extractKeywordsButton.setText("提取中...")
+            
+            response = requests.post(
+                f"{api_base}/chat/completions",
+                headers=headers,
+                json=data,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                keywords = result["choices"][0]["message"]["content"].strip()
+                
+                # 将关键词填入标签输入框
+                self.ui.tagsEdit.setText(keywords)
+                self.log(f"已提取关键词: {keywords}")
+                QMessageBox.information(self, "成功", f"已提取关键词: {keywords}")
+            else:
+                error_msg = f"API请求失败: {response.status_code} - {response.text}"
+                self.log(error_msg)
+                QMessageBox.critical(self, "错误", error_msg)
+                
+        except requests.exceptions.RequestException as e:
+            error_msg = f"网络请求错误: {str(e)}"
+            self.log(error_msg)
+            QMessageBox.critical(self, "错误", error_msg)
+        except Exception as e:
+            error_msg = f"提取关键词时发生错误: {str(e)}"
+            self.log(error_msg)
+            QMessageBox.critical(self, "错误", error_msg)
+        finally:
+            self.ui.extractKeywordsButton.setEnabled(True)
+            self.ui.extractKeywordsButton.setText("提炼关键词")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
